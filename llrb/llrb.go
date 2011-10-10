@@ -6,6 +6,12 @@
 
 package llrb
 
+import (
+        "bytes"
+        "gob"
+        "os"
+)
+
 // Tree{} is a Left-Leaning Red-Black (LLRB) implementation of 2-3 trees, based on:
 //
 //   http://www.cs.princeton.edu/~rs/talks/LLRB/08Penn.pdf
@@ -538,4 +544,21 @@ func fixUp(h *Node) *Node {
 	}
 
 	return h
+}
+
+// gob encode/decode doesn't work with functions...
+type EncodableTree struct {
+        Count int
+        Root *Node
+}
+
+func (t Tree) GobEncode() ([]byte, os.Error) {
+        etree := EncodableTree{t.count, t.root}
+        bb := new(bytes.Buffer)
+        encoder := gob.NewEncoder(bb)
+        err := encoder.Encode(etree)
+        if err != nil {
+                return nil, err
+        }
+        return bb.Bytes(), nil
 }

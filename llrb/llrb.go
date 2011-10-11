@@ -516,6 +516,10 @@ func moveRedLeft(h *Node) *Node {
 
 // REQUIRE: Left and right children must be present
 func moveRedRight(h *Node) *Node {
+        // PC:
+        if h.left == nil || h.right == nil {
+                return h
+        }
         flip(h)
         if isRed(h.left.left) {
                 h = rotateRight(h)

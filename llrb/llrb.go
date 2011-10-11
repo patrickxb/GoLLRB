@@ -6,12 +6,6 @@
 
 package llrb
 
-import (
-        "bytes"
-        "gob"
-        "os"
-)
-
 // Tree{} is a Left-Leaning Red-Black (LLRB) implementation of 2-3 trees, based on:
 //
 //   http://www.cs.princeton.edu/~rs/talks/LLRB/08Penn.pdf
@@ -321,7 +315,12 @@ func (t *Tree) delete(h *Node, item Item) (*Node, Item) {
                         h = rotateRight(h)
                 }
                 // If @item equals @h.item and no right children at @h
+<<<<<<< HEAD
                 if !t.less(h.item, item) && h.right == nil {
+=======
+                // if !t.less(h.item, item) && h.right == nil {
+                if !t.less(h.item, item) && !t.less(item, h.item) && h.right == nil {
+>>>>>>> 16120f82ca1e7c8fae70d2b1a21c825ff135b02d
                         return nil, h.item
                 }
                 // PETAR: Added 'h.right != nil' below
@@ -329,7 +328,11 @@ func (t *Tree) delete(h *Node, item Item) (*Node, Item) {
                         h = moveRedRight(h)
                 }
                 // If @item equals @h.item, and (from above) 'h.right != nil'
+<<<<<<< HEAD
                 if !t.less(h.item, item) {
+=======
+                if !t.less(h.item, item) && !t.less(item, h.item) {
+>>>>>>> 16120f82ca1e7c8fae70d2b1a21c825ff135b02d
                         var subDeleted Item
                         h.right, subDeleted = deleteMin(h.right)
                         if subDeleted == nil {
@@ -521,6 +524,10 @@ func moveRedLeft(h *Node) *Node {
 
 // REQUIRE: Left and right children must be present
 func moveRedRight(h *Node) *Node {
+        // PC:
+        if h.left == nil || h.right == nil {
+                return h
+        }
         flip(h)
         if isRed(h.left.left) {
                 h = rotateRight(h)
@@ -546,19 +553,3 @@ func fixUp(h *Node) *Node {
         return h
 }
 
-// gob encode/decode doesn't work with functions...
-type EncodableTree struct {
-        Count   int
-        Root    *Node
-}
-
-func (t Tree) GobEncode() ([]byte, os.Error) {
-        etree := EncodableTree{t.count, t.root}
-        bb := new(bytes.Buffer)
-        encoder := gob.NewEncoder(bb)
-        err := encoder.Encode(etree)
-        if err != nil {
-                return nil, err
-        }
-        return bb.Bytes(), nil
-}

@@ -232,3 +232,20 @@ func TestInsertNoReplace(t *testing.T) {
                 }
         }
 }
+
+func TestDeleteSameMultiple(t *testing.T) {
+        tree := New(IntLess)
+        n := 1000
+        for i := 0; i < n; i++ {
+                tree.InsertNoReplace(n)
+        }
+        if tree.Len() != n {
+                t.Errorf("expected %d elements in tree", n)
+        }
+        for i := 0; i < n; i++ {
+                tree.Delete(n)
+        }
+        if tree.Len() != 0 {
+                t.Errorf("expected 0 elements in tree, got %d", tree.Len())
+        }
+}

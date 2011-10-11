@@ -315,12 +315,8 @@ func (t *Tree) delete(h *Node, item Item) (*Node, Item) {
                         h = rotateRight(h)
                 }
                 // If @item equals @h.item and no right children at @h
-<<<<<<< HEAD
                 if !t.less(h.item, item) && h.right == nil {
-=======
-                // if !t.less(h.item, item) && h.right == nil {
-                if !t.less(h.item, item) && !t.less(item, h.item) && h.right == nil {
->>>>>>> 16120f82ca1e7c8fae70d2b1a21c825ff135b02d
+                // if !t.less(h.item, item) && !t.less(item, h.item) && h.right == nil {
                         return nil, h.item
                 }
                 // PETAR: Added 'h.right != nil' below
@@ -328,11 +324,8 @@ func (t *Tree) delete(h *Node, item Item) (*Node, Item) {
                         h = moveRedRight(h)
                 }
                 // If @item equals @h.item, and (from above) 'h.right != nil'
-<<<<<<< HEAD
                 if !t.less(h.item, item) {
-=======
-                if !t.less(h.item, item) && !t.less(item, h.item) {
->>>>>>> 16120f82ca1e7c8fae70d2b1a21c825ff135b02d
+                // if !t.less(h.item, item) && !t.less(item, h.item) {
                         var subDeleted Item
                         h.right, subDeleted = deleteMin(h.right)
                         if subDeleted == nil {
